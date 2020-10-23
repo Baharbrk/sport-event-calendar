@@ -1,13 +1,15 @@
 <?php
+
 namespace server\core;
 
 use PDO;
+use PDOException;
 
 require '../config/config.php';
 
 class Database
 {
-    /** @var null  */
+    /** @var null */
     private static $instance = null;
 
     /** @var string */
@@ -22,10 +24,17 @@ class Database
     /** @var string */
     private $dbPass;
 
-    /** @var PDO  */
+    /** @var PDO */
     private $conn;
+    
 
-
+    /**
+     * Database constructor.
+     * @param string $host
+     * @param string $name
+     * @param string $user
+     * @param string $pass
+     */
     private function __construct(string $host, string $name, string $user, string $pass)
     {
         $this->dbHost = $host;
@@ -33,13 +42,21 @@ class Database
         $this->dbUser = $user;
         $this->dbPass = $pass;
 
-        $this->conn =
-            new PDO(
-                "mysql:host={$this->dbHost};dbname={$this->dbName}",
-                $this->dbUser,
-                $this->dbPass,
-                array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'")
-            );
+        try {
+            $this->conn =
+                new PDO(
+                    'mysql:host=' . $this->dbHost . ';' . 'dbname=' . $this->dbName,
+                    $this->dbUser,
+                    $this->dbPass,
+                    array(
+                        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
+                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+                    )
+                );
+        } catch (PDOException $e) {
+            print 'Error!: ' . $e->getMessage() . '<br/>';
+            die();
+        }
     }
 
     /**
@@ -47,8 +64,7 @@ class Database
      */
     public static function getInstance()
     {
-        if(!self::$instance)
-        {
+        if (!self::$instance) {
             self::$instance = new Database(DB_HOST, DB_NAME, DB_USER, DB_PASSWORD);
         }
 
