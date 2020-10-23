@@ -1,0 +1,4 @@
+INSERT INTO category
+(name, hex_color)
+VALUES
+('Football', '28661a') , ('Ice Hocky', '6e1063') , ('Volleyball', '4c77b0') , ('Basketball', 'd63d22');
