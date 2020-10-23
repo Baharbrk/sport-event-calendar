@@ -5,16 +5,16 @@ namespace server\controllers;
 
 class Team extends BaseModel
 {
+    /** @var string */
     private $tableName = 'team';
 
+    /** @var string */
     private $name;
 
-    private $category;
 
-    public function __construct($name, $category)
+    public function __construct(string $name)
     {
         parent::__construct();
         $this->name = $name;
-        $this->category = $category;
     }
 }

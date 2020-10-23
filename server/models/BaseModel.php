@@ -2,31 +2,46 @@
 
 namespace server\controllers;
 
+use PDO;
+use PDOException;
 use server\core\Database;
 
 class BaseModel
 {
+    /** @var null */
     protected $tableName = null;
 
+    /** @var PDO */
     protected $conn;
 
     public function __construct()
     {
-        $db = Database::getInstance();
+        $db         = Database::getInstance();
         $this->conn = $db->getConnection();
     }
 
+    /**
+     * @return bool
+     */
     public function getId()
     {
-        $selectQuery = <<<SQL
-        SELECT id from {$this->tableName}
-        WHERE name = :name
-        SQL;
+        if (is_null($this->tableName)) {
+            die ('table name should not be null');
+        }
 
-        $stms = $this->conn->prepare($selectQuery);
-        $stms->bindValue(':name', $this->name, PDO::PARAM_STR);
-        $result = $stms->execute(); // todo: change this fetch is needed as well
+        try {
+            $selectQuery = <<<SQL
+            SELECT id from {$this->tableName}
+            WHERE name = :name
+            SQL;
 
-        return $result;
+            $stmt = $this->conn->prepare($selectQuery);
+            $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
+            $result = $stmt->execute(); // todo: change this fetch is needed as well
+
+            return $result;
+        } catch (PDOException $e) {
+            echo 'Unable to get the Id form ' . $this->tableName . $e->getMessage();
+        }
     }
 }
