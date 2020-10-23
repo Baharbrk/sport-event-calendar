@@ -3,20 +3,11 @@
 namespace server\controllers;
 
 
-class FilterEventController extends BaseModel
+class FilterEventController
 {
-    private $categoryId;
-
     /**
-     * FilterEventController constructor.
-     * @param string $categoryId
+     * @return array|string
      */
-    public function __construct(string $categoryId)
-    {
-        parent::__construct();
-        $this->categoryId = $categoryId;
-    }
-
     public function filterEventsByCategory()
     {
         if (isset($_GET['category_id'])) {
