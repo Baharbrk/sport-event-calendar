@@ -2,3 +2,11 @@ INSERT INTO category
 (name, hex_color)
 VALUES
 ('Football', '28661a') , ('Ice Hocky', '6e1063') , ('Volleyball', '4c77b0') , ('Basketball', 'd63d22');
+
+-- --------------------------------------------------------
+
+INSERT INTO team
+(name, _category_id)
+VALUES
+('Salzbur', 1) , ('Sturm', 1) , ('KAC', 2) , ('Kapitals', 2) , ('Flyers Wels', 3) , ('UBSC Graz', 3) ,
+('Aon hotVolleys', 4) , ('Hypo Tirol', 4);
