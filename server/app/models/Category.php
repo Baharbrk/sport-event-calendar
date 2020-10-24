@@ -1,6 +1,6 @@
 <?php
 
-namespace server\controllers;
+namespace app\models;
 
 
 class Category extends BaseModel

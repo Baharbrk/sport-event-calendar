@@ -1,6 +1,6 @@
 <?php
 
-namespace server\controllers;
+namespace app\models;
 
 
 class Team extends BaseModel
