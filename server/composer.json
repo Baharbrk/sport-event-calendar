@@ -4,5 +4,11 @@
       "app\\": "app/",
       "core\\": "core/"
     }
+  },
+
+  "require": {
+    "php": ">7.3",
+    "ext-pdo": "*",
+    "ext-json": "*"
   }
 }
