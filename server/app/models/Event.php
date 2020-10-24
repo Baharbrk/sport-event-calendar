@@ -9,6 +9,8 @@ class Event extends BaseModel
 {
 
     /**
+     * Add event to events table
+     *
      * @param $eventDate
      * @param $categoryId
      * @return bool|string
@@ -34,6 +36,8 @@ class Event extends BaseModel
     }
 
     /**
+     * Get event from events table
+     *
      * @param bool $doFilter
      * @param string|null $categoryId
      * @return array
@@ -52,13 +56,13 @@ class Event extends BaseModel
             ON t1.id = e_t._home_team_id
             LEFT JOIN team as t2
             ON t2.id = e_t._away_team_id
+            ORDER BY e.date
             SQL;
             if ($doFilter) {
                 $selectQuery .= <<<SQL
             WHERE e._category_id = :category_id
             SQL;
             }
-
             $stmt = $this->conn->prepare($selectQuery);
             if (isset($categoryId)) {
                 $stmt->bindParam('category_id', $categoryId, PDO::PARAM_INT);
@@ -70,10 +74,11 @@ class Event extends BaseModel
         } catch (PDOException $e) {
             echo 'Unable to get events ' . $e->getMessage();
         }
-
     }
 
     /**
+     * Update event's date in events table
+     *
      * @param $eventId
      * @param $date
      * @return bool
@@ -90,15 +95,17 @@ class Event extends BaseModel
             $stmt = $this->conn->prepare($updateQuery);
             $stmt->bindParam('event_date', $date, PDO::PARAM_STR);
             $stmt->bindParam('event_id', $eventId, PDO::PARAM_INT);
-            $stmt->execute();
+            $result = $stmt->execute();
 
-            return true;
+            return $result;
         } catch (PDOException $e) {
             echo 'Unable to update the event with Id' . $eventId . $e->getMessage();
         }
     }
 
     /**
+     * Delete event from events table
+     *
      * @param string $eventId
      * @return mixed
      */
@@ -112,9 +119,9 @@ class Event extends BaseModel
 
             $stmt = $this->conn->prepare($deleteQuery);
             $stmt->bindParam('event_id', $eventId, PDO::PARAM_INT);
-            $stmt->execute();
+            $result = $stmt->execute();
 
-            return true;
+            return $result;
         } catch (PDOException $e) {
             echo 'Unable to delete the event with Id ' . $eventId . $e->getMessage();
         }

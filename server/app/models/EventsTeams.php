@@ -9,12 +9,14 @@ use PDOException;
 class EventsTeams extends BaseModel
 {
     /**
+     * Add event's and team's Ids to events_teams table
+     *
      * @param $eventId
      * @param $homeTeamId
      * @param $awayTeamId
      * @return bool
      */
-    public function addEventDetails($eventId, $homeTeamId, $awayTeamId)
+    public function addEventDetails(string $eventId, string $homeTeamId, string $awayTeamId)
     {
         try {
             $insertQuery = <<<SQL

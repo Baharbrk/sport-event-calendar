@@ -4,7 +4,7 @@ namespace app\models;
 
 use PDO;
 use PDOException;
-use server\core\Database;
+use core\Database;
 
 class BaseModel
 {
@@ -21,6 +21,8 @@ class BaseModel
     }
 
     /**
+     * Get Id from different tables
+     *
      * @return bool
      */
     public function getId()
