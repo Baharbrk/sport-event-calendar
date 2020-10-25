@@ -48,24 +48,28 @@ class Event extends BaseModel
             $selectQuery = <<<SQL
             SELECT e.date, c.name as category_name, c.hex_color, t1.name as home_team, t2.name as away_team
             FROM events as e
-            LEFT JOIN category as c
+            JOIN category as c
             ON e._category_id = c.id
-            LEFT JOIN events_teams as e_t
+            JOIN events_teams as e_t
             ON e.id = e_t._event_id
-            LEFT JOIN team as t1
+            JOIN team as t1
             ON t1.id = e_t._home_team_id
-            LEFT JOIN team as t2
+            JOIN team as t2
             ON t2.id = e_t._away_team_id
-            ORDER BY e.date
             SQL;
             if ($doFilter) {
                 $selectQuery .= <<<SQL
-            WHERE e._category_id = :category_id
+             WHERE e._category_id = :category_id
             SQL;
             }
+            $selectQuery .= <<<SQL
+              ORDER BY e.date;
+            SQL;
+
             $stmt = $this->conn->prepare($selectQuery);
             if (isset($categoryId)) {
                 $stmt->bindParam('category_id', $categoryId, PDO::PARAM_INT);
+
             }
             $stmt->execute();
 

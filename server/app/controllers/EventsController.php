@@ -8,8 +8,15 @@ use app\models\Event;
 use app\models\Team;
 use app\models\EventsTeams;
 
-class EventsController
+class EventsController extends BaseController
 {
+    /** @var Event  */
+    private $events;
+
+    public function __construct()
+    {
+        $this->events = new Event();
+    }
 
     /**
      *
@@ -18,11 +25,11 @@ class EventsController
     public function getEvents()
     {
         if (isset($_GET['category_id'])) {
-            $this->filterEventsByCategory();
-        }
-        $events = new Event();
 
-        return $this->sendResponse($events->getEvents(false));
+            return $this->filterEventsByCategory();
+        }
+
+        return $this->sendResponse($this->events->getEvents(false));
     }
 
     /**
@@ -32,38 +39,11 @@ class EventsController
     public function filterEventsByCategory()
     {
         if (!empty($_GET['category_id'])) {
-            $event = new Event();
 
-            return $this->sendResponse($event->getEvents(true, $_GET['category_id']));
+            return $this->sendResponse($this->events->getEvents(true, $_GET['category_id']));
         }
 
         return $this->sendError(400, 'Please Provide a Category Id');
-    }
-
-    /**
-     * @param array $response
-     * @return bool
-     */
-    public function sendResponse(array $response)
-    {
-        echo json_encode($response);  //todo:check if status changes
-
-        return true;
-    }
-
-    /**
-     * @param int $statusCode
-     * @param string $message
-     *
-     * @return bool
-     */
-    public function sendError(int $statusCode, string $message)
-    {
-
-        http_response_code($statusCode);
-        echo json_encode($message);
-
-        return false;
     }
 
     /**
@@ -80,26 +60,25 @@ class EventsController
             $homeTeamId = $_POST['home_team'];
             $awayTeamId = $_POST['away_team'];
 
-            $event              = new Event();
-            $eventId            = $event->addEvent($_POST['date'], $categoryId);
+            $eventId            = $this->events->addEvent($_POST['date'], $categoryId);
             $team               = new Team();
-            $homeTeamCategoryId = $team->getCategoryIdFromTeam($homeTeamId);
-            $awayTeamCategoryId = $team->getCategoryIdFromTeam($awayTeamId);
+            $homeTeamCategoryId = $team->getCategoryIdByTeamId($homeTeamId);
+            $awayTeamCategoryId = $team->getCategoryIdByTeamId($awayTeamId);
 
-            if (
-                !empty($eventId) &&
+            if (!empty($eventId) &&
                 $this->validate($homeTeamId, $awayTeamId, $homeTeamCategoryId, $awayTeamCategoryId)
             ) {
                 $eventsTeams = new EventsTeams();
                 $response    = $eventsTeams->addEventDetails($eventId, $homeTeamId, $awayTeamId);
                 if ($response) {
+
                     return $this->sendOK();
                 }
 
-                return $this->sendError(500, $response[2]); //this should be changed
+                return $this->sendError(500, 'Unable to add Event');
             }
 
-            return $this->sendError(400, 'same teams');
+            return $this->sendError(400, 'Unable to add Event please enter valid teams');
 
         } else {
 
@@ -128,27 +107,16 @@ class EventsController
     /**
      * @return bool
      */
-    public function sendOK()
-    {
-        echo json_encode('OK');
-
-        return true;
-    }
-
-    /**
-     * @return bool
-     */
     public function updateEvent()
     {
         if (isset($_POST['id'])) {
-            $event    = new Event();
-            $response = $event->updateEvent($_POST['id'], $_POST['date']);
+            $response = $this->events->updateEvent($_POST['id'], $_POST['date']);
             if ($response) {
 
                 return $this->sendOK();
             }
 
-            return $this->sendError(500, $response[2]);
+            return $this->sendError(500, 'Unable to update Events');
         }
 
         return $this->sendError(400, 'Please Provide an event Id');
@@ -160,14 +128,13 @@ class EventsController
     public function deleteEvent()
     {
         if (isset($_POST['event_id'])) {
-            $event    = new Event();
-            $response = $event->deleteEvent($_POST['event_id']);
+            $response = $this->events->deleteEvent($_POST['event_id']);
             if ($response) {
 
                 return $this->sendOK();
             }
 
-            return $this->sendError(500, $response[2]);
+            return $this->sendError(500, 'Unable to delete Events');
         }
 
         return $this->sendError(400, 'Please Provide an event Id');
