@@ -40,6 +40,7 @@ class BaseModel
             $stmt = $this->conn->prepare($selectQuery);
             $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
             $result = $stmt->execute(); // todo: change this fetch is needed as well
+            // get category id for teams
 
             return $result;
         } catch (PDOException $e) {

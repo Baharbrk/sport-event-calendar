@@ -3,18 +3,25 @@
 namespace app\models;
 
 
+use PDO;
+
 class Team extends BaseModel
 {
     /** @var string */
-    private $tableName = 'team';
-
-    /** @var string */
-    private $name;
+    protected $tableName = 'team';
 
 
-    public function __construct(string $name)
+    public function getCategoryIdFromTeam(string $teamId)
     {
-        parent::__construct();
-        $this->name = $name;
+        $selectQuery = <<<SQL
+            SELECT _category_id from team
+            WHERE id = :id
+            SQL;
+
+        $stmt = $this->conn->prepare($selectQuery);
+        $stmt->bindValue(':id', $teamId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchColumn();
     }
 }

@@ -20,7 +20,7 @@ class EventsTeams extends BaseModel
     {
         try {
             $insertQuery = <<<SQL
-            INSERT INTO events_teams (_event_id, _home_team_id, away_team_id)
+            INSERT INTO events_teams (_event_id, _home_team_id, _away_team_id)
             VALUES (:event_id, :home_id, :away_id)
             SQL;
 

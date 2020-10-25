@@ -58,7 +58,7 @@ CREATE TABLE events_teams (
   _events_id INT UNSIGNED NOT NULL ,
   _home_team_id INT UNSIGNED NOT NULL,
   _away_team_id INT UNSIGNED NOT NULL,
-  FOREIGN KEY (_events_id) REFERENCES events(id) ON DELETE CASCADE,
+  FOREIGN KEY (_event_id) REFERENCES events(id) ON DELETE CASCADE,
   FOREIGN KEY (_home_team_id) REFERENCES team(id) ON DELETE CASCADE,
   FOREIGN KEY (_away_team_id) REFERENCES team(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;

@@ -42,7 +42,7 @@ class Event extends BaseModel
      * @param string|null $categoryId
      * @return array
      */
-    public function getEvent(bool $doFilter, string $categoryId = null)
+    public function getEvents(bool $doFilter, string $categoryId = null)
     {
         try {
             $selectQuery = <<<SQL
@@ -51,7 +51,7 @@ class Event extends BaseModel
             LEFT JOIN category as c
             ON e._category_id = c.id
             LEFT JOIN events_teams as e_t
-            ON e.id = e_t._events_id
+            ON e.id = e_t._event_id
             LEFT JOIN team as t1
             ON t1.id = e_t._home_team_id
             LEFT JOIN team as t2
@@ -68,9 +68,8 @@ class Event extends BaseModel
                 $stmt->bindParam('category_id', $categoryId, PDO::PARAM_INT);
             }
             $stmt->execute();
-            $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            return $events;
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             echo 'Unable to get events ' . $e->getMessage();
         }
