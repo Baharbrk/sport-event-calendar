@@ -17,6 +17,7 @@
   },
 
   "scripts": {
-    "test": "vendor/bin/phpunit -c config/phpunit.xml"
+    "test": "vendor/bin/phpunit -c config/phpunit.xml",
+    "start": "php -S localhost:8000 ./public/index.php"
   }
 }

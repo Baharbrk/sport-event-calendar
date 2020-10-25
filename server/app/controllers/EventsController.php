@@ -14,17 +14,16 @@ class EventsController
 
     /**
      *
-     * @return bool
+     * @return bool|string
      */
     public function getEvents()
     {
-        $events   = new Event();
-        $response = $events->getEvent(false);
-        if (!empty($response)) {
-            return $this->sendResponse($response);
+        if (isset($_GET['category_id'])) {
+            $this->filterEventsByCategory();
         }
+        $events   = new Event();
 
-        return $this->sendError(500, '');
+        return $this->sendResponse($events->getEvent(false));
     }
 
     /**
@@ -76,11 +75,12 @@ class EventsController
 
             if (!empty($eventId) && $this->validate($homeTeamId, $awayTeamId)) {
                 $eventsTeams = new EventsTeams();
-                if ($eventsTeams->addEventDetails($eventId, $homeTeamId, $awayTeamId)) {
+                $response = $eventsTeams->addEventDetails($eventId, $homeTeamId, $awayTeamId);
+                if ($response) {
                     return $this->sendOK();
                 }
 
-                return $this->sendError(500, '');
+                return $this->sendError(500, $response[2]);
             }
         } else {
 
@@ -117,12 +117,13 @@ class EventsController
     {
         if (isset($_POST['id'])) {
             $event = new Event();
-            if ($event->updateEvent($_POST['id'], $_POST['date'])) {
+            $response = $event->updateEvent($_POST['id'], $_POST['date']);
+            if ($response) {
 
                 return $this->sendOK();
             }
 
-            return $this->sendError(500, '');
+            return $this->sendError(500, $response[2]);
         }
 
         return $this->sendError(400, 'Please Provide an event Id');
@@ -130,38 +131,33 @@ class EventsController
 
     /**
      *
-     * @return array|string
+     * @return bool|string
      */
     public function filterEventsByCategory()
-    {  // filterEventyById
-        if (isset($_GET['category_id'])) {
-            $event    = new Event();
-            $response = $event->getEvent(true, $_GET['category_id']);
-            if ($response) {
+    {
+        if (!empty($_GET['category_id'])) {
+            $event = new Event();
 
-                return $this->sendResponse($response);
-            }
-
-            return $this->sendError(500, '');
+            return $this->sendResponse($event->getEvent(true, $_GET['category_id']));
         }
 
         return $this->sendError(400, 'Please Provide a Category Id');
     }
 
     /**
-     *
-     * @return bool|string
+     * @return bool
      */
     public function deleteEvent()
     {
         if (isset($_POST['event_id'])) {
             $event = new Event();
-            if ($event->deleteEvent($_POST['event_id'])) {
+            $response = $event->deleteEvent($_POST['event_id']);
+            if ($response) {
 
                 return $this->sendOK();
             }
 
-            return $this->sendError(500, '');
+            return $this->sendError(500, $response[2]);
         }
 
         return $this->sendError(400, 'Please Provide an event Id');

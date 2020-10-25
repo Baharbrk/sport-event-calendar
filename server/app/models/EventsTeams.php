@@ -14,7 +14,7 @@ class EventsTeams extends BaseModel
      * @param $eventId
      * @param $homeTeamId
      * @param $awayTeamId
-     * @return bool
+     * @return bool|array
      */
     public function addEventDetails(string $eventId, string $homeTeamId, string $awayTeamId)
     {
@@ -28,9 +28,9 @@ class EventsTeams extends BaseModel
             $stmt->bindParam('event_id', $eventId, PDO::PARAM_INT);
             $stmt->bindParam('home_id', $homeTeamId, PDO::PARAM_INT);
             $stmt->bindParam('away_id', $awayTeamId, PDO::PARAM_INT);
-            $stmt->execute();
+            $result = $stmt->execute();
 
-            return true;
+            return $result ? $result : $stmt->errorInfo();
         } catch (PDOException $e) {
             echo 'Unable to add events details to events_teams for event Id ' . $eventId . $e->getMessage();
         }

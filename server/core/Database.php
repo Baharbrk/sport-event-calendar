@@ -5,7 +5,7 @@ namespace core;
 use PDO;
 use PDOException;
 
-require '../config/config.php';
+require dirname(__DIR__) . '/config/config.php';
 
 class Database
 {

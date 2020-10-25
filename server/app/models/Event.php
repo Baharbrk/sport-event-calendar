@@ -79,9 +79,9 @@ class Event extends BaseModel
     /**
      * Update event's date in events table
      *
-     * @param $eventId
-     * @param $date
-     * @return bool
+     * @param string $eventId
+     * @param string $date
+     * @return array|bool
      */
     public function updateEvent(string $eventId, string $date)
     {
@@ -97,7 +97,7 @@ class Event extends BaseModel
             $stmt->bindParam('event_id', $eventId, PDO::PARAM_INT);
             $result = $stmt->execute();
 
-            return $result;
+            return $result ? $result : $stmt->errorInfo();
         } catch (PDOException $e) {
             echo 'Unable to update the event with Id' . $eventId . $e->getMessage();
         }
@@ -107,7 +107,7 @@ class Event extends BaseModel
      * Delete event from events table
      *
      * @param string $eventId
-     * @return mixed
+     * @return array|bool
      */
     public function deleteEvent(string $eventId)
     {
@@ -121,7 +121,7 @@ class Event extends BaseModel
             $stmt->bindParam('event_id', $eventId, PDO::PARAM_INT);
             $result = $stmt->execute();
 
-            return $result;
+            return $result ? $result : $stmt->errorInfo();
         } catch (PDOException $e) {
             echo 'Unable to delete the event with Id ' . $eventId . $e->getMessage();
         }
