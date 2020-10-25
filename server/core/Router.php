@@ -1,6 +1,6 @@
 <?php
 
-namespace server\core;
+namespace core;
 
 use app\controllers\EventsController;
 
@@ -13,27 +13,31 @@ class Router
      */
     public function route(string $url)
     {
-        $controller = new EventsController();
+        if (preg_match('~\/events~', $url)) {
+            $controller = new EventsController();
 
-        if (isset($_GET['category_id'])) {
+            if (!empty(explode('/', $url)[2])) {
+                switch (explode('/', $url)[2]) {
+                    case 'add':
 
-            return $controller->filterEventsByCategory();
-        } else {
+                        return $controller->addEvent();
+                    case 'delete':
 
-            switch (explode('/', $url)[2]) {
-                case 'add':
+                        return $controller->deleteEvent();
+                    case 'update':
 
-                    return $controller->addEvent();
-                case 'delete':
-
-                    return $controller->deleteEvent();
-                case 'update':
-
-                    return $controller->updateEvent();
-                default:
-
-                    return $controller->getEvent(); //todo: maybe add a home controller?
+                        return $controller->updateEvent();
+                }
+            } else {
+                return $controller->getEvents();
             }
+        } else {
+            http_response_code(404);
+
+            return 'Page Not Found';
         }
     }
 }
+
+
+
