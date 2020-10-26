@@ -26,7 +26,7 @@ class Database
 
     /** @var PDO */
     private $conn;
-    
+
 
     /**
      * Database constructor.

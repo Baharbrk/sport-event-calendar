@@ -10,7 +10,7 @@ use app\models\EventsTeams;
 
 class EventsController extends BaseController
 {
-    /** @var Event  */
+    /** @var Event */
     private $events;
 
     public function __construct()

@@ -46,7 +46,7 @@ class Event extends BaseModel
     {
         try {
             $selectQuery = <<<SQL
-            SELECT e.date, c.name as category_name, c.hex_color, t1.name as home_team, t2.name as away_team
+            SELECT e.id, e.date, c.name as category_name, c.hex_color, t1.name as home_team, t2.name as away_team
             FROM events as e
             JOIN category as c
             ON e._category_id = c.id
@@ -90,9 +90,9 @@ class Event extends BaseModel
     {
         try {
             $updateQuery = <<<SQL
-            UPDATE events AS e
+            UPDATE events
             SET date = :event_date
-            WHERE e.id = :event_id; 
+            WHERE id = :event_id; 
             SQL;
 
             $stmt = $this->conn->prepare($updateQuery);
@@ -116,8 +116,8 @@ class Event extends BaseModel
     {
         try {
             $deleteQuery = <<<SQL
-            DELETE FROM events AS e
-            WHERE e.id = :event_id;
+            DELETE FROM events
+            WHERE id = :event_id;
             SQL;
 
             $stmt = $this->conn->prepare($deleteQuery);

@@ -12,7 +12,7 @@ class TeamController extends BaseController
     public function filterTeamsByCategory()
     {
         $categoryId = $_POST['category_id'];
-        $team = new Team();
+        $team       = new Team();
 
         $this->sendResponse($team->getTeamsByCategoryId($categoryId));
 
