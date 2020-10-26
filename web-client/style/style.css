@@ -2,13 +2,19 @@
     margin-right: 20px;
     width: 250px;
 }
-#add-event-button {
-    margin-left: 15px;
-    margin-top: 10px;
-}
+
 #add-events {
-    margin-top: 20px;
+    margin-top: 35px;
+    background-color: #eeeeee;
+    padding-top: 5px;
 }
+
 #navbar {
     margin-bottom: 30px;
+}
+.event {
+    padding: 2px;
+    font-size: x-small;
+    margin: 2px;
+    color: white;
 }
