@@ -109,8 +109,8 @@ class EventsController extends BaseController
      */
     public function updateEvent()
     {
-        if (isset($_POST['id'])) {
-            $response = $this->events->updateEvent($_POST['id'], $_POST['date']);
+        if (isset($_POST['event_id'])) {
+            $response = $this->events->updateEvent($_POST['event_id'], $_POST['new_date']);
             if ($response) {
 
                 return $this->sendOK();

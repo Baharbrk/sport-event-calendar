@@ -18,6 +18,7 @@ class BaseController
 
     /**
      * @param array $response
+     *
      * @return bool
      */
     public function sendResponse(array $response)
