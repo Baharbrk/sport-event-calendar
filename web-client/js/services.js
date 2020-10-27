@@ -9,14 +9,16 @@ function addEvent(e) {
             home_team: $('#home-team').val(),
             away_team: $('#away-team').val()
         }
-    }).done(function () {
+    }).done(function() {
         alert('Event is added successfully');
         getEvents();
-    }).fail(function () {
-        alert('Unable to add event');
+    }).fail(function(result) {
+        alert(JSON.parse(result.responseText));
     });
 };
-function updateEvent(eventId, eventDate) {
+
+function updateEvent(eventId, eventDate)
+{
     $.ajax({
         url: 'http://localhost:8000/events/update',
         method: 'POST',
@@ -31,7 +33,9 @@ function updateEvent(eventId, eventDate) {
         alert('Unable to Update the event');
     });
 }
-function deleteEvent(eventId) {
+
+function deleteEvent(eventId)
+{
     if (confirm('Are you sure you want to delete this event?')) {
         $.ajax({
             url: 'http://localhost:8000/events/delete',
@@ -42,25 +46,27 @@ function deleteEvent(eventId) {
         }).done(function () {
             alert('Event is removed');
             getEvents();
-        }).fail(function () {
-            alert('Unable to remove the event');
+        }).fail(function (result) {
+            alert(JSON.parse(result.responseText));
         });
     }
 }
 
-function getEvents() {
+function getEvents()
+{
     $.ajax({
         url: 'http://localhost:8000/events',
         method: 'GET'
     }).done(function (result) {
         let events = JSON.parse(result);
         loadCalendar(events);
-    }).fail(function () {
-        alert('Unable to load events');
+    }).fail(function(result) {
+        alert(JSON.parse(result.responseText));
     });
 };
 
-function filterEvents(e) {
+function filterEvents(e)
+{
     e.preventDefault();
     $.ajax({
         url: 'http://localhost:8000/events?category=' + $('#filter-category').val(),
@@ -68,12 +74,13 @@ function filterEvents(e) {
     }).done(function (result) {
         let events = JSON.parse(result);
         loadCalendar(events);
-    }).fail(function () {
-        alert('Unable to filter events');
+    }).fail(function(result) {
+        alert(JSON.parse(result.responseText));
     });
 }
 
-function filterTeams() {
+function filterTeams()
+{
     $.ajax({
         url: 'http://localhost:8000/team/filter',
         method: 'POST',
@@ -91,7 +98,7 @@ function filterTeams() {
         awayTeamSelect.append(
             $('<option disabled selected value></option>').html('- Aaway Team -')
         );
-        $.each(JSON.parse(result), function (key, value) {
+        $.each(JSON.parse(result), function(key, value) {
             homeTeamSelect.append(
                 $('<option></option>').val(value.id).html(value.name)
             );
@@ -99,7 +106,7 @@ function filterTeams() {
                 $('<option></option>').val(value.id).html(value.name)
             );
         })
-    }).fail(function () {
-        alert('Unable to filter Teams by their category');
+    }).fail(function(result) {
+        alert(JSON.parse(result.responseText));
     });
 }
