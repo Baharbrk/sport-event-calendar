@@ -24,7 +24,7 @@ class EventsController extends BaseController
      */
     public function getEvents()
     {
-        if (isset($_GET['category_id'])) {
+        if (isset($_GET['category'])) {
 
             return $this->filterEventsByCategory();
         }
@@ -38,15 +38,16 @@ class EventsController extends BaseController
      */
     public function filterEventsByCategory()
     {
-        if (!empty($_GET['category_id'])) {
+        if (!empty($_GET['category'])) {
 
-            return $this->sendResponse($this->events->getEvents(true, $_GET['category_id']));
+            return $this->sendResponse($this->events->getEvents(true, $_GET['category']));
         }
 
         return $this->sendError(400, 'Please Provide a Category Id');
     }
 
     /**
+     *
      * @return bool
      */
     public function addEvent()
@@ -98,6 +99,7 @@ class EventsController extends BaseController
     private function validate(string $homeTeamId, string $awayTeamId, string $homeCategoryId, string $awayCategoryId)
     {
         if ($homeTeamId !== $awayTeamId && $homeCategoryId === $awayCategoryId) {
+
             return true;
         }
 

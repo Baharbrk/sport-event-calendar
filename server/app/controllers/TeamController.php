@@ -15,6 +15,5 @@ class TeamController extends BaseController
         $team       = new Team();
 
         $this->sendResponse($team->getTeamsByCategoryId($categoryId));
-
     }
 }

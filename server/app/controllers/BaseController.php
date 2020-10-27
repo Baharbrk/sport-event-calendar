@@ -36,11 +36,9 @@ class BaseController
      */
     public function sendError(int $statusCode, string $message)
     {
-
         http_response_code($statusCode);
         echo json_encode($message);
 
         return false;
     }
-
 }

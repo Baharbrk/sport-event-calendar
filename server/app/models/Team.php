@@ -11,7 +11,6 @@ class Team extends BaseModel
     /** @var string */
     protected $tableName = 'team';
 
-
     public function getCategoryIdByTeamId(string $teamId)
     {
         try {

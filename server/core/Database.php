@@ -30,6 +30,7 @@ class Database
 
     /**
      * Database constructor.
+     *
      * @param string $host
      * @param string $name
      * @param string $user
