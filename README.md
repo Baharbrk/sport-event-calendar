@@ -11,5 +11,8 @@ Before running the project:
  - To run client
 	 - Open index.html in web-client folder 
 
+**MYSQL :**
+MYSQL scripts can be found in `server/data` folder
+
 **ERD of the system:**
 ![Entity Relationship Diagram](./ERD.png)
