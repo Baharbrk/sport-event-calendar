@@ -10,6 +10,7 @@ function addEvent(e) {
             away_team: $('#away-team').val()
         }
     }).done(function () {
+        alert('Event is added successfully');
         getEvents();
     }).fail(function () {
         alert('Unable to add event');
@@ -24,6 +25,7 @@ function updateEvent(eventId, eventDate) {
             new_date: eventDate,
         }
     }).done(function () {
+        alert('Event is updated');
         getEvents();
     }).fail(function () {
         alert('Unable to Update the event');
@@ -38,6 +40,7 @@ function deleteEvent(eventId) {
                 event_id: eventId
             }
         }).done(function () {
+            alert('Event is removed');
             getEvents();
         }).fail(function () {
             alert('Unable to remove the event');

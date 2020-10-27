@@ -1,6 +1,3 @@
-$('#exampleModal').modal({
-    show: 'false'
-});
 const calendarSetting = {
     Color: '#999',                //(string - color) font color of whole calendar.
     LinkColor: '#333',            //(string - color) font color of event titles.
@@ -15,22 +12,16 @@ const calendarSetting = {
     DisabledDays: [],             //(array of numbers) days of the week to be slightly transparent. ie: [1,6] to fade Sunday and Saturday.
 };
 
+let selectedEventId;
+
+$('#events-modal').modal({
+    show: 'false'
+});
+
 function openModal(eventId) {
-    $('#exampleModal').modal('show');
-    $('#delete-button').on('click', function () {
-        $('#exampleModal').modal('hide');
-        deleteEvent(eventId);
-    });
-    $('#update-button').on('click', function () {
-        
-        if ($('#update-date').val() && $('#update-time').val()) {
-            let newDate = $('#update-date').val() + ' ' + $('#update-time').val();
-            $('#exampleModal').modal('hide');
-            updateEvent(eventId, newDate);
-        } else {
-            alert('Please Provide Date time');
-        }
-    });
+    selectedEventId = eventId;
+    $('#update-event-form').trigger("reset");
+    $('#events-modal').modal('show');
 }
 
 function loadCalendar(events) {
@@ -59,4 +50,23 @@ function loadCalendar(events) {
 
 $(document).ready(function () {
     getEvents();
+
+    $('#delete-button').on('click', function () {
+
+        deleteEvent(selectedEventId);
+        selectedEventId = null;
+        $('#events-modal').modal('hide');
+    });
+
+    $('#update-button').on('click', function () {
+        if ($('#update-date').val() && $('#update-time').val()) {
+            let newDate = $('#update-date').val() + ' ' + $('#update-time').val();
+
+            updateEvent(selectedEventId, newDate);
+            selectedEventId = null;
+            $('#events-modal').modal('hide');
+        } else {
+            alert('Please Provide Date time');
+        }
+    });
 });

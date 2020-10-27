@@ -48,24 +48,27 @@
     </div>
 </nav>
 <div class="container">
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="events-modal" tabindex="-1" role="dialog" aria-labelledby="events-modal-label"
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="edit-event">Edit event</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group col-md-6">
-                        <label for="update-date">Date</label>
-                        <input type="date" id="update-date" class="form-control" required>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="update-time">Time</label>
-                        <input type="time" id="update-time" class="form-control" required>
-                    </div>
+                    <form id="update-event-form">
+                        <div class="form-group col-md-6">
+                            <label for="update-date">Date</label>
+                            <input type="date" id="update-date" class="form-control" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="update-time">Time</label>
+                            <input type="time" id="update-time" class="form-control" required>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="update-button" class="btn btn-primary">Update event</button>
@@ -115,7 +118,7 @@
                         </div>
                     </div>
                 </div>
-                <div >
+                <div>
                     <button id="add-event-button" class="btn btn-primary float-right">Add Event</button>
                 </div>
             </form>
