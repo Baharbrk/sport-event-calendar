@@ -63,7 +63,7 @@ function getEvents() {
 function filterEvents(e) {
     e.preventDefault();
     $.ajax({
-        url: 'http://localhost:8000/events?category_id=' + $('#filter-category').val(),
+        url: 'http://localhost:8000/events?category=' + $('#filter-category').val(),
         method: 'GET',
     }).done(function (result) {
         let events = JSON.parse(result);
@@ -78,7 +78,7 @@ function filterTeams() {
         url: 'http://localhost:8000/team/filter',
         method: 'POST',
         data: {
-            category_id: $('#category').val(),
+            category: $('#category').val(),
         }
     }).done(function (result) {
         var homeTeamSelect = $('#home-team');

@@ -9,38 +9,58 @@ use app\controllers\TeamController;
 class Router
 {
     /**
+     * @var TeamController
+     */
+    private $teamController;
+
+    /**
+     * @var EventsController
+     */
+    private $eventsController;
+
+    public function __construct()
+    {
+        $this->eventsController = new EventsController();
+        $this->teamController = new TeamController();
+    }
+
+    /**
      * @param string $url
-     * @return bool|string
+     * @return bool
      */
     public function route(string $url)
     {
         if (preg_match('~\/events~', $url)) {
-            $eventsController = new EventsController();
-
             if (!empty(explode('/', $url)[2])) {
                 switch (explode('/', $url)[2]) {
                     case 'add':
+                        $this->eventsController->addEvent();
 
-                        return $eventsController->addEvent();
+                        return true;
                     case 'delete':
+                        $this->eventsController->deleteEvent();
 
-                        return $eventsController->deleteEvent();
+                        return true;
                     case 'update':
+                        $this->eventsController->updateEvent();
 
-                        return $eventsController->updateEvent();
+                        return true;
                 }
             } else {
 
-                return $eventsController->getEvents();
+                $this->eventsController->getEvents();
+
+                return true;
             }
         } elseif (preg_match('~\/team~', $url)) {
-            $teamController = new TeamController();
+            $this->teamController->filterTeamsByCategory();
 
-            return $teamController->filterTeamsByCategory();
+            return true;
         }
         http_response_code(404);
+        echo 'Page Not Found';
 
-        return 'Page Not Found';
+        return false;
     }
 }
 
